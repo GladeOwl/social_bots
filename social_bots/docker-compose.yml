@@ -1,5 +1,9 @@
 version: '0.1'
 services:
+  api:
+    build: './secrets'
+    volumes:
+      - ./creds:/api/creds/:ro # change this to the local secrets folder
   telelgram:
     build: './telegram_bot'
     env_file:
