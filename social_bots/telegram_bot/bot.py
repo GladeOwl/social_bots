@@ -1,18 +1,25 @@
 """Telegram Bot Module"""
 
 import asyncio
-import os
 
+import requests
 import telegram
-from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-load_dotenv()
 app = FastAPI()
 
-TOKEN = os.getenv("TOKEN")
-USERID = os.getenv("USERID")
+
+def get_secret(token: str):
+    """Gets the secret for the token from the API"""
+    response: requests.Response = requests.get(
+        "http://api:6000/secret", json={"token": token}, timeout=10
+    )
+    return response.text.replace('"', "")
+
+
+TOKEN: str = get_secret("telegram")
+USERID: str = get_secret("telegram-user-id")
 
 
 class Request(BaseModel):
@@ -23,6 +30,7 @@ class Request(BaseModel):
 
 def start_bot():
     """Starts the Telegram Bot"""
+
     return telegram.Bot(TOKEN)
 
 
@@ -40,7 +48,8 @@ def send(request: Request):
 
 async def send_message(message):
     """Send Message via the Telegram Bot"""
-    bot = start_bot()
+    bot: telegram.Bot = start_bot()
+
     async with bot:
         await bot.send_message(chat_id=USERID, text=message)
     return "Message Sent"
