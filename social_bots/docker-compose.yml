@@ -1,8 +1,15 @@
 version: '0.1'
 services:
+  api:
+    container_name: secrets_api
+    build: './secrets'
+    volumes:
+      - ./creds:/api/creds/:ro # change this to the local secrets folder
   telelgram:
+    container_name: telegram_bot
     build: './telegram_bot'
-    env_file:
-      - .env
     ports:
       - "50001:5000"
+    depends_on:
+      api:
+        condition: service_healthy
