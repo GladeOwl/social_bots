@@ -7,13 +7,14 @@ readme = "README.md"
 packages = [{include = "social_bots"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<3.13"
 python-telegram-bot = "^20.4"
 python-dotenv = "^1.0.0"
 fastapi = "^0.100.0"
 uvicorn = "^0.22.0"
 requests = "^2.31.0"
 pyyaml = "^6.0"
+hikari = "^2.0.0.dev122"
 
 
 [build-system]

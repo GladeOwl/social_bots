@@ -13,3 +13,11 @@ services:
     depends_on:
       api:
         condition: service_healthy
+  discord:
+    container_name: discord_bot
+    build: './discord_bot'
+    ports:
+      - "50002:5001"
+    depends_on:
+      api:
+        condition: service_healthy
